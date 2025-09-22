@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  namespace: service-lab
+  name: db-pod-rs
+spec:
+  selector:
+    matchLabels:
+      type: backend-db
+      app: db
+      env: test
+  template:
+    metadata:
+      labels:
+        type: backend-db
+        app: db
+        env: test
+    spec:
+      containers:
+      - name: db
+        image: mongo:3.3
+        ports:
+        - containerPort: 28017

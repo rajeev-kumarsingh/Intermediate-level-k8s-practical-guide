@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: service-lab
+  labels:
+    environment: test
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  namespace: service-lab
+  name: rs-example
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: backend
+      db: mongoLabs
+  template:
+    metadata:
+      labels:
+        type: backend
+        db: mongoLabs
+        service: go-demo-2
+        language: go
+    spec:
+      containers:
+      - name: db
+        image: mongo:3.3
+        command: [ "mongod" ]
+        args: [ "--rest", "--httpinterface" ]
+        ports:
+        - containerPort: 28017
+          protocol: TCP
+      - name: api
+        image: vfarcic/go-demo-2
+        env:
+        - name: DB
+          value: localhost
+        livenessProbe:
+          httpGet:
+            path: /demo/hello
+            port: 8080

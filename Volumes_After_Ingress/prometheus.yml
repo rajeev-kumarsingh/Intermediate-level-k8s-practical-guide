@@ -1,0 +1,75 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /prometheus
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: prometheus
+            port:
+              number: 9090
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+spec:
+  selector:
+    matchLabels:
+      type: monitor
+      service: prometheus
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        type: monitor
+        service: prometheus
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v2.51.2
+        command:
+        - /bin/prometheus
+        args:
+        - "--config.file=/etc/prometheus/prometheus.yml"
+        - "--storage.tsdb.path=/prometheus"
+        - "--web.console.libraries=/usr/share"
+        - "--web.external-url=https://ed-4941182869045248_dc.educative.run/prometheus"
+      #   volumeMounts:
+      #   - mountPath: /etc/prometheus/prometheus.yml
+      #     name: prom-conf
+      #     #subPath: prometheus-conf.yml
+      # volumes:
+      # - name: prom-conf
+      #   hostPath:
+      #     path: /files/prometheus-conf.yml
+      #     type: File
+      # nodeSelector:
+      #   kubernetes.io/hostname: mycluster-control-plane
+      # tolerations:
+      # - key: "node-role.kubernetes.io/control-plane"
+      #   operator: "Exists"
+      #   effect: "NoSchedule"
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+spec:
+  ports:
+  - port: 9090
+  selector:
+    type: monitor
+    service: prometheus

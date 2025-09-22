@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 15s
+# This sets the default interval at which Prometheus will scrape (collect) metrics from targets
+# In this case, every 15 seconds, Prometheus will try to scrape data from all configured targets.
+
+scrape_configs:
+# List of jobs that Prometheus should scrape.
+- job_name: prometheus # Logical name for this group of targets.
+  metrics_path: /prometheus/metrics # Tells Prometheus what URL path to use when scraping.
+  # Default is /metrics, but here it's set to /prometheus/metrics
+  static_configs:
+  # Tells Prometheus the static list of targets to scrape.
+  - targets:
+    - localhost:9090
+
+# This is the address of the Prometheus server itself (i.e., it is scraping its own internal metrics).
+# Port 9090 is the default Prometheus web UI and metrics port.

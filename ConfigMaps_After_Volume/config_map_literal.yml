@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  something: else
+  weather: rainy
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2025-07-28T08:18:34Z"
+  name: my-config
+  namespace: default
+  resourceVersion: "89815"
+  uid: 2654c4d9-9806-4f8f-9842-b0cd89a7147a

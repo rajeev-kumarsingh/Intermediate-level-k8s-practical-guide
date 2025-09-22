@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  annotations:
+    endpoints.kubernetes.io/last-change-trigger-time: "2025-07-18T05:53:32Z"
+  creationTimestamp: "2025-07-18T05:53:32Z"
+  labels:
+    endpoints.kubernetes.io/managed-by: endpoint-controller
+  name: replicaset-svc
+  namespace: service-lab
+  resourceVersion: "798110"
+  uid: f64bb6ad-2efd-4944-ad8e-313fabcab6e4
+subsets:
+- addresses:
+  - ip: 10.244.1.4
+    nodeName: ops-cluster-worker2
+    targetRef:
+      kind: Pod
+      name: rs-example-6qnvm
+      namespace: service-lab
+      uid: c1c2c89b-96fd-4239-9b13-7a840061f799
+  - ip: 10.244.2.3
+    nodeName: ops-cluster-worker3
+    targetRef:
+      kind: Pod
+      name: rs-example-br9gz
+      namespace: service-lab
+      uid: 1d710185-ec99-4c51-b8bb-cbce95b43f5b
+  ports:
+  - port: 28017
+    protocol: TCP

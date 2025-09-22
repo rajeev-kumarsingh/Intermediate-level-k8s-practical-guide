@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: pod-lab
+  name: db
+  labels:
+    type: backend
+    db: mongoLabs
+spec:
+  containers:
+  - name: db
+    image: mongo:3.3
+    command: [ "mongod" ]
+    args: [ "--rest", "--httpinterface" ]

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: docker-dind
+spec:
+  containers:
+  - name: docker
+    image: docker:24.0.7-dind
+    securityContext:
+      privileged: true
+    args: [ "--host", "tcp://0.0.0.0:2375" ]
+  #   volumeMounts:
+  #   - mountPath: /var/run/docker.sock
+  #     name: docker-socket
+  # volumes:
+  # - name: docker-socket
+  #   hostPath:
+  #     path: /var/run/docker.sock
+  #     type: Socket
